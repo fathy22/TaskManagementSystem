@@ -1,0 +1,34 @@
+﻿@using TaskManagementSystem.Web.Models.Teams
+@using TaskManagementSystem.Web.Models.Common.Modals
+@model EditTeamModalViewModel
+@{
+    Layout = null;
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Edit Team"))
+<form name="TeamEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.Team.Id" />
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="teamname">Name</label>
+            <div class="col-md-9">
+                <input id="teamname" class="form-control" type="text" name="Name" value="@Model.Team.Name" required maxlength="32" minlength="2">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="TeamLeaderId">Team Leader</label>
+            <div class="col-md-9">
+                <select id="TeamLeaderId" name="TeamLeaderId" class="form-control" required>
+                    <option value="0">Select</option>
+                    @foreach (var user in Model.TeamLeaders)
+                    {
+                        var isSelected = user.Id == Model.Team.TeamLeaderId ? true : false;
+                        <option value="@user.Id" selected="@isSelected">@user.FullName</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+
+<script src="~/view-resources/Views/Teams/_EditModal.js" asp-append-version="true"></script>

@@ -1,7 +1,10 @@
 ﻿using Abp.AutoMapper;
+using Abp.Dependency;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
 using TaskManagementSystem.Authorization;
+using TaskManagementSystem.Tasks;
+using TaskManagementSystem.Teams;
 
 namespace TaskManagementSystem
 {
@@ -13,6 +16,8 @@ namespace TaskManagementSystem
         public override void PreInitialize()
         {
             Configuration.Authorization.Providers.Add<TaskManagementSystemAuthorizationProvider>();
+            IocManager.Register<ITaskSheetAppService, TaskSheetsAppService>(DependencyLifeStyle.Transient);
+            IocManager.Register<ITeamAppService, TeamAppService>(DependencyLifeStyle.Transient);
         }
 
         public override void Initialize()

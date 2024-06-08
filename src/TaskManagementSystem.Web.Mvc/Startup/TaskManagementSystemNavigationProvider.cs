@@ -54,6 +54,24 @@ namespace TaskManagementSystem.Web.Startup
                         icon: "fas fa-theater-masks",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Roles)
                     )
+                    )
+                    .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Tasks,
+                        L("Tasks"),
+                        url: "TaskSheets",
+                        icon: "fas fa-tasks",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_TaskSheets)
+                    ))
+                    .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Teams,
+                        L("Teams"),
+                        url: "Teams",
+                        icon: "fas fa-users",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Teams)
+                    )
+
                 //)
                 //.AddItem( // Menu items below is just for demonstration!
                 //    new MenuItemDefinition(
