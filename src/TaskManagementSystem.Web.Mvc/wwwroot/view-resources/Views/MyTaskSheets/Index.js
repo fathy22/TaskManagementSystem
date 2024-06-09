@@ -13,7 +13,7 @@
         listAction: {
             ajaxFunction: _taskSheetService.getAll,
             inputFilter: function () {
-                var filter = $('#UsersSearchForm').serializeFormToObject(true);
+                var filter = $('#MyTaskSheetsSearchForm').serializeFormToObject(true);
                 filter.userId = _$userId; 
                 return filter;
             }

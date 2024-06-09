@@ -20,7 +20,6 @@ using Abp.UI;
 using System;
 namespace TaskManagementSystem.Tasks
 {
-    //[AbpAuthorize(PermissionNames.Pages_TaskSheets)]
     public class TaskSheetsAppService : AsyncCrudAppService<TaskSheet, TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, UpdateTaskSheetDto>, ITaskSheetAppService
     {
 
@@ -82,8 +81,10 @@ namespace TaskManagementSystem.Tasks
         {
             return Repository
                 .GetAll()
+                .Include(c=>c.Team)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Title.Contains(input.Keyword))
-                .WhereIf(input.UserId.HasValue, x => x.UserId == input.UserId);
+                .WhereIf(input.UserId.HasValue, x => x.UserId == input.UserId)
+                .WhereIf(input.TeamLeaderId.HasValue, x => x.Team.TeamLeaderId == input.TeamLeaderId);
         }
         protected override async Task<TaskSheet> GetEntityByIdAsync(int id)
         {
