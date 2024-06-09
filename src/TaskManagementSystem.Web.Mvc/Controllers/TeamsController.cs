@@ -32,8 +32,8 @@ namespace TaskManagementSystem.Web.Controllers
         public async Task<ActionResult> Index()
         {
             var user = (await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto()));
-            var teamLeaders = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.TeamLeads)).ToList();
-            var regularUsers = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.RegularUsers)).ToList();
+            var teamLeaders = user.Items.Where(u => u.RoleNames.Any(role => role.ToLower() == StaticRoleNames.Host.TeamLeads.ToLower())).ToList();
+            var regularUsers = user.Items.Where(u => u.RoleNames.Any(role => role.ToLower() == StaticRoleNames.Host.RegularUsers.ToLower())).ToList();
             var model = new TeamListViewModel
             {
                 TeamLeaders = teamLeaders,
