@@ -1,5 +1,5 @@
 ﻿(function ($) {
-    var _taskSheetService = abp.services.app.taskSheet,
+    var _taskSheetService = abp.services.app.taskSheets,
         l = abp.localization.getSource('TaskManagementSystem'),
         _$modal = $('#TaskSheetEditModal'),
         _$form = _$modal.find('form');
@@ -15,7 +15,7 @@
         _taskSheetService.update(taskSheet).done(function () {
             _$modal.modal('hide');
             abp.notify.info(l('SavedSuccessfully'));
-            abp.event.trigger('TaskSheet.edited', taskSheet);
+            abp.event.trigger('taskSheet.edited', taskSheet);
         }).always(function () {
             abp.ui.clearBusy(_$form);
         });

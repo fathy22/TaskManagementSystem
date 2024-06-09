@@ -8,5 +8,6 @@ namespace TaskManagementSystem.Web.Models.Teams
     public class TeamListViewModel
     {
         public IReadOnlyList<UserDto> TeamLeaders { get; set; }
+        public IReadOnlyList<UserDto> RegularUsers { get; set; }
     }
 }

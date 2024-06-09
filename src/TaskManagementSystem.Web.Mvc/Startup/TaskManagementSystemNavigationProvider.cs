@@ -70,6 +70,13 @@ namespace TaskManagementSystem.Web.Startup
                         url: "Teams",
                         icon: "fas fa-users",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Teams)
+                    )).AddItem(
+                    new MenuItemDefinition(
+                        PageNames.MyTasks,
+                        L("MyTasks"),
+                        url: "MyTaskSheets",
+                        icon: "fas fa-users",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_MyTaskSheets)
                     )
 
                 //)

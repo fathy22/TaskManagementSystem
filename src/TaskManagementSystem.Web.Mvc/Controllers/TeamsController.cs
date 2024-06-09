@@ -33,9 +33,11 @@ namespace TaskManagementSystem.Web.Controllers
         {
             var user = (await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto()));
             var teamLeaders = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.TeamLeads)).ToList();
+            var regularUsers = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.RegularUsers)).ToList();
             var model = new TeamListViewModel
             {
-                TeamLeaders = teamLeaders
+                TeamLeaders = teamLeaders,
+                RegularUsers  = regularUsers
             };
            
             return View(model);
@@ -48,11 +50,13 @@ namespace TaskManagementSystem.Web.Controllers
                 var team = await _TeamAppService.GetAsync(new EntityDto<int>(teamId));
                 var user = (await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto()));
                 var teamLeaders = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.TeamLeads)).ToList();
+                var regularUsers = user.Items.Where(user => user.RoleNames.Any(role => role == StaticRoleNames.Host.RegularUsers)).ToList();
                 var model = new EditTeamModalViewModel
                     {
                         Team = team,
-                        TeamLeaders = teamLeaders
-                    };
+                        TeamLeaders = teamLeaders,
+                        RegularUsers = regularUsers
+                };
                 return PartialView("_EditModal", model);
             }
             catch (System.Exception ex)

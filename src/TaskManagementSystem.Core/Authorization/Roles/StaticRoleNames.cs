@@ -6,6 +6,7 @@ namespace TaskManagementSystem.Authorization.Roles
         {
             public const string Admin = "Admin";
             public const string TeamLeads = "TEAMLEADS";
+            public const string RegularUsers = "REGULARUSER";
         }
 
         public static class Tenants

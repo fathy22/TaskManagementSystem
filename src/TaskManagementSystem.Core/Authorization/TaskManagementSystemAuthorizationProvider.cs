@@ -12,6 +12,7 @@ namespace TaskManagementSystem.Authorization
             context.CreatePermission(PermissionNames.Pages_Users_Activation, L("UsersActivation"));
             context.CreatePermission(PermissionNames.Pages_Roles, L("Roles"));
             context.CreatePermission(PermissionNames.Pages_TaskSheets, L("Tasks"));
+            context.CreatePermission(PermissionNames.Pages_MyTaskSheets, L("MyTaskSheets"));
             context.CreatePermission(PermissionNames.Pages_Teams, L("Teams"));
             context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
         }

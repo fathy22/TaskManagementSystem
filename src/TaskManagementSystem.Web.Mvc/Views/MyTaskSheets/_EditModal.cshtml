@@ -1,0 +1,71 @@
+﻿@using TaskManagementSystem.Helpers.Enums;
+@using TaskManagementSystem.Web.Models.MyTaskSheets
+@using TaskManagementSystem.Web.Models.Common.Modals
+@model EditMyTaskSheetModalViewModel
+@{
+    Layout = null;
+    var taskSheetStatuses = Enum.GetValues(typeof(TaskSheetStatus)).Cast<TaskSheetStatus>().ToList();
+    var TaskPriorities = Enum.GetValues(typeof(TaskPriority)).Cast<TaskPriority>().ToList();
+}
+@await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Edit My Task"))
+<form name="MyTaskSheetEditForm" role="form" class="form-horizontal">
+    <input type="hidden" name="Id" value="@Model.TaskSheet.Id" />
+    <div class="modal-body">
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="Title">Title</label>
+            <div class="col-md-9">
+                <input id="Title" type="text" name="Title" value="@Model.TaskSheet.Title" class="form-control" required maxlength="32" minlength="2">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="description">Description</label>
+            <div class="col-md-9">
+                <input id="description" type="text" name="description" value="@Model.TaskSheet.Description" class="form-control" required maxlength="32" minlength="2">
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="DueDate">Due Date</label>
+            <div class="col-md-9">
+                <input id="DueDate" type="date" name="DueDate" value="@Model.TaskSheet.DueDate" class="form-control" required>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="TaskStatus">Task Status</label>
+            <div class="col-md-9">
+                <select id="TaskStatus" name="TaskStatus" class="form-control" required>
+                    <option value="0">Select</option>
+                    @foreach (var status in taskSheetStatuses)
+                    {
+                        var isSelected = status == Model.TaskSheet.TaskStatus ? true : false;
+                        <option value="@(Convert.ToInt32(status))" selected="@isSelected">@status</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="TaskPriority">Task Priority</label>
+            <div class="col-md-9">
+                <select id="TaskPriority" name="TaskPriority" class="form-control" required>
+                    <option value="0">Select</option>
+                    @foreach (var priority in TaskPriorities)
+                    {
+                        var isSelected = priority == Model.TaskSheet.TaskPriority ? true : false;
+                        <option value="@(Convert.ToInt32(priority))" selected="@isSelected">@priority</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="AttachmentId">Attachment</label>
+            <div class="col-md-9">
+                <input type="file" accept="*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                <button type="button" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;" (click)="file.click()">
+                    UploadFile
+                </button>
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+</form>
+
+<script src="~/view-resources/Views/MyTaskSheets/_EditModal.js" asp-append-version="true"></script>

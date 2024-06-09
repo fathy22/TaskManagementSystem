@@ -119,6 +119,7 @@
     <text name="UsersActivation">Users activation</text>'
 
 	  <text name="Tasks">Tasks</text>
+	  <text name="MyTasks">My Tasks</text>
 	  <text name="Teams">Teams</text>
   </texts>
 </localizationDictionary>

@@ -14,5 +14,7 @@ namespace TaskManagementSystem.Web.Models.Teams
         public TeamDto Team { get; set; }
 
         public IReadOnlyList<UserDto> TeamLeaders { get; set; }
+        public IReadOnlyList<UserDto> RegularUsers { get; set; }
+
     }
 }

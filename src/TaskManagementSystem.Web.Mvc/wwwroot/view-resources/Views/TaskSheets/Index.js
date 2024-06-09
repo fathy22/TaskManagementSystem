@@ -1,11 +1,11 @@
 ﻿(function ($) {
-    var _taskSheetService = abp.services.app.taskSheet,
+    var _taskSheetService = abp.services.app.taskSheets,
         l = abp.localization.getSource('TaskManagementSystem'),
         _$modal = $('#TaskSheetCreateModal'),
         _$form = _$modal.find('form'),
         _$table = $('#TaskSheetsTable');
 
-    var _$taskSheetTable = _$table.DataTable({
+    var _$taskSheetsTable = _$table.DataTable({
         paging: true,
         serverSide: true,
         listAction: {
@@ -53,7 +53,7 @@
                         `   <button type="button" class="btn btn-sm bg-secondary edit-taskSheet" data-taskSheet-id="${row.id}" data-toggle="modal" data-target="#TaskSheetEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
                         '   </button>',
-                        `   <button type="button" class="btn btn-sm bg-danger delete-taskSheet" data-taskSheet-id="${row.id}" data-taskSheet-title="${row.name}">`,
+                        `   <button type="button" class="btn btn-sm bg-danger delete-taskSheet" data-taskSheet-id="${row.id}" data-taskSheet-title="${row.title}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
                         '   </button>',
                     ].join('');
@@ -63,6 +63,7 @@
     });
 
     _$form.find('.save-button').on('click', (e) => {
+        debugger;
         e.preventDefault();
 
         if (!_$form.valid()) {
@@ -86,6 +87,7 @@
     });
 
     $(document).on('click', '.delete-taskSheet', function () {
+        debugger;
         var taskSheetId = $(this).attr("data-taskSheet-id");
         var taskSheetTitle = $(this).attr('data-taskSheet-title');
 
@@ -113,6 +115,7 @@
     });
 
     function deleteTaskSheet(taskSheetId, taskSheetTitle) {
+        debugger;
         abp.message.confirm(
             abp.utils.formatString(
                 l('AreYouSureWantToDelete'),

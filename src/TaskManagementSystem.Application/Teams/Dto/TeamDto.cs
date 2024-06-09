@@ -23,5 +23,6 @@ namespace TaskManagementSystem.Teams.Dto
         [Required]
         public long TeamLeaderId { get; set; }
         public UserDto TeamLeader { get; set; }
+        public List<CreateTeamMemberDto> TeamMembers { get; set; }
     }
 }

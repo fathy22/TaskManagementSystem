@@ -1,0 +1,71 @@
+﻿@using TaskManagementSystem.Helpers.Enums;
+@using TaskManagementSystem.Web.Models.Common.Modals
+@model TaskManagementSystem.Web.Models.MyTaskSheets.MyTaskSheetListViewModel
+@{
+    Layout = null;
+    var taskSheetStatuses = Enum.GetValues(typeof(TaskSheetStatus)).Cast<TaskSheetStatus>().ToList();
+    var TaskPriorities = Enum.GetValues(typeof(TaskPriority)).Cast<TaskPriority>().ToList();
+}
+<div class="modal fade" id="MyTaskSheetCreateModal" tabindex="-1" role="dialog" aria-labelledby="MyTaskSheetCreateModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Create New Task"))
+            <form name="taskSheetCreateForm" role="form" class="form-horizontal">
+                <div class="modal-body">
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="Title">Title</label>
+                        <div class="col-md-9">
+                            <input id="Title" type="text" name="Title" class="form-control" required maxlength="32" minlength="2">
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="description">Description</label>
+                        <div class="col-md-9">
+                            <input id="description" type="text" name="description" class="form-control" required maxlength="32" minlength="2">
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="DueDate">Due Date</label>
+                        <div class="col-md-9">
+                            <input id="DueDate" type="date" name="DueDate" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="TaskStatus">Task Status</label>
+                        <div class="col-md-9">
+                            <select id="TaskStatus" name="TaskStatus" class="form-control" required>
+                                <option value="0">Select</option>
+                                @foreach (var status in taskSheetStatuses)
+                                {
+                                    <option value="@(Convert.ToInt32(status))">@status</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="TaskPriority">Task Priority</label>
+                        <div class="col-md-9">
+                            <select id="TaskPriority" name="TaskPriority" class="form-control" required>
+                                <option value="0">Select</option>
+                                @foreach (var priority in TaskPriorities)
+                                {
+                                    <option value="@(Convert.ToInt32(priority))">@priority</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="AttachmentId">Attachment</label>
+                        <div class="col-md-9">
+                            <input type="file" accept="*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                            <button type="button" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;" (click)="file.click()">
+                                UploadFile
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+            </form>
+        </div>
+    </div>
+</div>

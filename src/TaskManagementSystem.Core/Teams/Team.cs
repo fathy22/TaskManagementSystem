@@ -16,5 +16,6 @@ namespace TaskManagementSystem.Teams
         public long TeamLeaderId { get; set; }
         [ForeignKey("TeamLeaderId")]
         public User TeamLeader { get; set; }
+        public ICollection<TeamMember> TeamMembers { get; set; }
     }
 }

@@ -20,9 +20,12 @@ namespace TaskManagementSystem.Mapping
             CreateMap<UpdateTeamDto, Team>();
             CreateMap<TeamDto, Team>();
 
+            //TeamMember
+            CreateMap<CreateTeamMemberDto, TeamMember>();
+
             //Task
             CreateMap<CreateTaskSheetDto, TaskSheet>();
-            CreateMap<TaskSheetDto, TaskSheet>();
+            CreateMap<UpdateTaskSheetDto, TaskSheet>();
             CreateMap<TaskSheetDto, TaskSheet>();
         }
     }

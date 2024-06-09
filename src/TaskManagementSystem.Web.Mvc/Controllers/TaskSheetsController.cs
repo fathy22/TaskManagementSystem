@@ -9,6 +9,9 @@ using TaskManagementSystem.Web.Models.Users;
 using System.Threading.Tasks.Sources;
 using TaskManagementSystem.Tasks;
 using TaskManagementSystem.Web.Models.TaskSheets;
+using System.Linq;
+using TaskManagementSystem.Teams;
+using TaskManagementSystem.Web.Models.Teams;
 
 namespace TaskManagementSystem.Web.Controllers
 {
@@ -16,26 +19,40 @@ namespace TaskManagementSystem.Web.Controllers
     public class TaskSheetsController : TaskManagementSystemControllerBase
     {
         private readonly IUserAppService _userAppService;
+        private readonly ITeamAppService _teamAppService;
         private readonly ITaskSheetAppService _taskSheetAppService;
 
-        public TaskSheetsController(IUserAppService userAppService, ITaskSheetAppService taskSheetAppService)
+        public TaskSheetsController(ITeamAppService teamAppService,IUserAppService userAppService, ITaskSheetAppService taskSheetAppService)
         {
             _userAppService = userAppService;
             _taskSheetAppService = taskSheetAppService;
+            _teamAppService = teamAppService;
         }
 
         public async Task<ActionResult> Index()
         {
             var tasks = (await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto()));
-            var model = new TaskSheetListViewModel();
+            var users = await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto());
+            var teams = await _teamAppService.GetAllAsync(new Teams.Dto.PagedTeamResultRequestDto());
+            var model = new TaskSheetListViewModel
+            {
+                Teams = teams.Items,
+                Users = users.Items
+            };
             return View(model);
         }
 
         public async Task<ActionResult> EditModal(int taskId)
         {
-            var user = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
-            var roles = (await _userAppService.GetRoles()).Items;
-            var model = new EditUserModalViewModel();
+            var task = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
+            var users = await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto());
+            var teams = await _teamAppService.GetAllAsync(new Teams.Dto.PagedTeamResultRequestDto());
+            var model = new EditTaskSheetModalViewModel
+            {
+                TaskSheet = task,
+                Teams = teams.Items,
+                Users = users.Items
+            };
             return PartialView("_EditModal", model);
         }
 
