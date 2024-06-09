@@ -52,6 +52,14 @@ namespace TaskManagementSystem.Web.Startup
                         url: "MyTaskSheets",
                         icon: "fas fa-tasks",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_MyTaskSheets)
+                    ))
+                    .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.TeamTasks,
+                        L("TeamTasks"),
+                        url: "TeamTaskSheets",
+                        icon: "fas fa-tasks",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_TeamTaskSheets)
                     )
                 );
         }

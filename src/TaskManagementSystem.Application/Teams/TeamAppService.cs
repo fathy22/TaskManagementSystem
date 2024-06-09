@@ -19,6 +19,7 @@ using Abp.Domain.Uow;
 using Abp.UI;
 using System;
 using TaskManagementSystem.Teams.Dto;
+using TaskManagementSystem.Users.Dto;
 
 namespace TaskManagementSystem.Teams
 {
@@ -99,6 +100,30 @@ namespace TaskManagementSystem.Teams
                 throw ex;
             }
            
+
+        }
+        public async Task<TeamShowDto> GetTeamMembersByByTeamLeaderId(long teamLeaderId)
+        {
+            try
+            {
+                var data = new TeamShowDto();
+                var team = await Repository.GetAll()
+                    .Include(c => c.TeamMembers).ThenInclude(m=>m.Member)
+                    .FirstOrDefaultAsync(t => t.TeamLeaderId == teamLeaderId);
+                data.TeamMembers= team.TeamMembers.Select(u => new UserDto
+                {
+                    Id=u.MemberId,
+                    FullName = u.Member.FullName
+                }).ToList();
+                data.TeamId = team.Id;
+                return data;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
 
         }
 

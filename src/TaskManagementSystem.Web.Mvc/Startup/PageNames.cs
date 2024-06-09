@@ -9,6 +9,7 @@
         public const string Roles = "Roles"; 
         public const string Tasks = "Tasks"; 
         public const string MyTasks = "MyTasks"; 
+        public const string TeamTasks = "Team Tasks"; 
         public const string Teams = "Teams"; 
     }
 }

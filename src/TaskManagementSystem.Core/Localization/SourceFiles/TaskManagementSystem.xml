@@ -120,6 +120,7 @@
 
 	  <text name="Tasks">Tasks</text>
 	  <text name="MyTasks">My Tasks</text>
+	  <text name="TeamTasks">Team Tasks</text>
 	  <text name="Teams">Teams</text>
   </texts>
 </localizationDictionary>

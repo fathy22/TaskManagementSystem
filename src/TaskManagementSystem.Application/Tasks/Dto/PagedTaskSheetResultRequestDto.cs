@@ -6,7 +6,7 @@ namespace TaskManagementSystem.Tasks.Dto
     {
         public string Keyword { get; set; }
         public long? UserId { get; set; }
-        public long? TeamLeaderId { get; set; }
+        public long? TeamId { get; set; }
     }
 }
 

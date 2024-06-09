@@ -1761,6 +1761,9 @@ namespace TaskManagementSystem.Migrations
                     b.Property<DateTime?>("DeletionTime")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("DependentTaskId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -1768,6 +1771,9 @@ namespace TaskManagementSystem.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDependentOnAnotherTask")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastModificationTime")
@@ -1794,6 +1800,8 @@ namespace TaskManagementSystem.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AttachmentId");
+
+                    b.HasIndex("DependentTaskId");
 
                     b.HasIndex("TeamId");
 
@@ -2150,6 +2158,10 @@ namespace TaskManagementSystem.Migrations
                         .WithMany()
                         .HasForeignKey("AttachmentId");
 
+                    b.HasOne("TaskManagementSystem.Tasks.TaskSheet", "DependentTask")
+                        .WithMany()
+                        .HasForeignKey("DependentTaskId");
+
                     b.HasOne("TaskManagementSystem.Teams.Team", "Team")
                         .WithMany()
                         .HasForeignKey("TeamId");
@@ -2159,6 +2171,8 @@ namespace TaskManagementSystem.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("Attachment");
+
+                    b.Navigation("DependentTask");
 
                     b.Navigation("Team");
 
@@ -2185,7 +2199,7 @@ namespace TaskManagementSystem.Migrations
                         .IsRequired();
 
                     b.HasOne("TaskManagementSystem.Teams.Team", "Team")
-                        .WithMany()
+                        .WithMany("TeamMembers")
                         .HasForeignKey("TeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2264,6 +2278,11 @@ namespace TaskManagementSystem.Migrations
                     b.Navigation("Settings");
 
                     b.Navigation("Tokens");
+                });
+
+            modelBuilder.Entity("TaskManagementSystem.Teams.Team", b =>
+                {
+                    b.Navigation("TeamMembers");
                 });
 #pragma warning restore 612, 618
         }

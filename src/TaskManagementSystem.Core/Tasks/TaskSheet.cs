@@ -28,5 +28,10 @@ namespace TaskManagementSystem.Tasks
         public int? TeamId { get; set; }
         [ForeignKey("TeamId")]
         public  Team Team { get; set; }
+        public  bool IsDependentOnAnotherTask { get; set; }
+
+        public int? DependentTaskId { get; set; }
+        [ForeignKey("DependentTaskId")]
+        public TaskSheet DependentTask { get; set; }
     }
 }

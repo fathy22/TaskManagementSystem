@@ -5,8 +5,8 @@ namespace TaskManagementSystem.Authorization.Roles
         public static class Host
         {
             public const string Admin = "Admin";
-            public const string TeamLeads = "TEAMLEADS";
-            public const string RegularUsers = "REGULARUSER";
+            public const string TeamLeads = "TeamLeads";
+            public const string RegularUsers = "RegularUsers";
         }
 
         public static class Tenants

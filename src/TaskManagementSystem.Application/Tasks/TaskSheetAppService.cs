@@ -84,7 +84,7 @@ namespace TaskManagementSystem.Tasks
                 .Include(c=>c.Team)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Title.Contains(input.Keyword))
                 .WhereIf(input.UserId.HasValue, x => x.UserId == input.UserId)
-                .WhereIf(input.TeamLeaderId.HasValue, x => x.Team.TeamLeaderId == input.TeamLeaderId);
+                .WhereIf(input.TeamId.HasValue, x => x.TeamId == input.TeamId);
         }
         protected override async Task<TaskSheet> GetEntityByIdAsync(int id)
         {

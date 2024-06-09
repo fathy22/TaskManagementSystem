@@ -38,7 +38,18 @@ namespace TaskManagementSystem.EntityFrameworkCore.Seed.Tenants
                 adminRole = _context.Roles.Add(new Role(_tenantId, StaticRoleNames.Tenants.Admin, StaticRoleNames.Tenants.Admin) { IsStatic = true }).Entity;
                 _context.SaveChanges();
             }
-
+            var roleForTeamLeads = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.TeamLeads);
+            if (roleForTeamLeads == null)
+            {
+                roleForTeamLeads = _context.Roles.Add(new Role(null, StaticRoleNames.Host.TeamLeads, StaticRoleNames.Host.TeamLeads) { IsStatic = true, IsDefault = true }).Entity;
+                _context.SaveChanges();
+            }
+            var RoleForRegularUsers = _context.Roles.IgnoreQueryFilters().FirstOrDefault(r => r.TenantId == null && r.Name == StaticRoleNames.Host.RegularUsers);
+            if (RoleForRegularUsers == null)
+            {
+                RoleForRegularUsers = _context.Roles.Add(new Role(null, StaticRoleNames.Host.RegularUsers, StaticRoleNames.Host.RegularUsers) { IsStatic = true, IsDefault = true }).Entity;
+                _context.SaveChanges();
+            }
             // Grant all permissions to admin role
 
             var grantedPermissions = _context.Permissions.IgnoreQueryFilters()
@@ -55,6 +66,11 @@ namespace TaskManagementSystem.EntityFrameworkCore.Seed.Tenants
             if (permissions.Any(x => x.Name.Contains("Pages.MyTaskSheets")))
             {
                 var per = permissions.FirstOrDefault(x => x.Name.Contains("Pages.MyTaskSheets"));
+                permissions.Remove(per);
+            }
+            if (permissions.Any(x => x.Name.Contains("Pages.TeamTaskSheets")))
+            {
+                var per = permissions.FirstOrDefault(x => x.Name.Contains("Pages.TeamTaskSheets"));
                 permissions.Remove(per);
             }
             if (permissions.Any())
