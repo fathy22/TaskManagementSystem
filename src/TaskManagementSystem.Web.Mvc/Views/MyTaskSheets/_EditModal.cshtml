@@ -10,6 +10,7 @@
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Edit My Task"))
 <form name="MyTaskSheetEditForm" role="form" class="form-horizontal">
     <input type="hidden" name="Id" value="@Model.TaskSheet.Id" />
+    <input id="UserId" type="hidden" name="UserId" value="@Model.TaskSheet.UserId" />
     <div class="modal-body">
         <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="Title">Title</label>

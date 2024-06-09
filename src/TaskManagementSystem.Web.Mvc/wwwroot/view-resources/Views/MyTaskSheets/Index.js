@@ -1,9 +1,11 @@
 ﻿(function ($) {
+    debugger;
     var _taskSheetService = abp.services.app.taskSheets,
         l = abp.localization.getSource('TaskManagementSystem'),
         _$modal = $('#MyTaskSheetCreateModal'),
         _$form = _$modal.find('form'),
-        _$table = $('#MyTaskSheetsTable');
+        _$table = $('#MyTaskSheetsTable'),
+        _$userId = $('#UserId').val();
 
     var _$myTaskSheetsTable = _$table.DataTable({
         paging: true,
@@ -11,7 +13,9 @@
         listAction: {
             ajaxFunction: _taskSheetService.getAll,
             inputFilter: function () {
-                return $('#MyTaskSheetsSearchForm').serializeFormToObject(true);
+                var filter = $('#UsersSearchForm').serializeFormToObject(true);
+                filter.userId = _$userId; 
+                return filter;
             }
         },
         buttons: [
@@ -35,7 +39,7 @@
             {
                 targets: 1,
                 data: 'title',
-                sortable: false
+                sortable: false,
             },
             {
                 targets: 2,
@@ -50,7 +54,7 @@
                 defaultContent: '',
                 render: (data, type, row, meta) => {
                     return [
-                        `   <button type="button" class="btn btn-sm bg-secondary edit-taskSheet" data-taskSheet-id="${row.id}" data-toggle="modal" data-target="#TaskSheetEditModal">`,
+                        `   <button type="button" class="btn btn-sm bg-secondary edit-taskSheet" data-taskSheet-id="${row.id}" data-toggle="modal" data-target="#MyTaskSheetEditModal">`,
                         `       <i class="fas fa-pencil-alt"></i> ${l('Edit')}`,
                         '   </button>',
                         `   <button type="button" class="btn btn-sm bg-danger delete-taskSheet" data-taskSheet-id="${row.id}" data-taskSheet-title="${row.title}">`,
@@ -72,6 +76,7 @@
 
         var myTaskSheet = _$form.serializeFormToObject();
 
+        myTaskSheet.userId = _$userId;
         abp.ui.setBusy(_$modal);
         _taskSheetService
             .create(myTaskSheet)
@@ -111,7 +116,7 @@
     });
 
     abp.event.on('myTaskSheet.edited', (data) => {
-        _$taskSheetsTable.ajax.reload();
+        _$myTaskSheetsTable.ajax.reload();
     });
 
     function deleteTaskSheet(taskSheetId, taskSheetTitle) {

@@ -22,7 +22,7 @@ using TaskManagementSystem.Teams.Dto;
 
 namespace TaskManagementSystem.Teams
 {
-    [AbpAuthorize(PermissionNames.Pages_Teams)]
+    //[AbpAuthorize(PermissionNames.Pages_Teams)]
     public class TeamAppService : AsyncCrudAppService<Team, TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, UpdateTeamDto>, ITeamAppService
     {
 

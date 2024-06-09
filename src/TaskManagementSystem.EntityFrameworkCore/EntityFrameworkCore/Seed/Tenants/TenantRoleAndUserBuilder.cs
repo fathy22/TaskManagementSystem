@@ -52,7 +52,11 @@ namespace TaskManagementSystem.EntityFrameworkCore.Seed.Tenants
                 .Where(p => p.MultiTenancySides.HasFlag(MultiTenancySides.Tenant) &&
                             !grantedPermissions.Contains(p.Name))
                 .ToList();
-
+            if (permissions.Any(x => x.Name.Contains("Pages.MyTaskSheets")))
+            {
+                var per = permissions.FirstOrDefault(x => x.Name.Contains("Pages.MyTaskSheets"));
+                permissions.Remove(per);
+            }
             if (permissions.Any())
             {
                 _context.Permissions.AddRange(

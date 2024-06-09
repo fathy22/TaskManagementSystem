@@ -4,7 +4,7 @@
     {
         ToDo = 1,
         InProgress = 2,
-        Completed = 2
+        Completed = 3
     }
     public enum TaskPriority
     {

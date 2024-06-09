@@ -33,14 +33,18 @@ namespace TaskManagementSystem.Web.Controllers
         {
             var tasks = (await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto()));
             var list = tasks.Items.Where(c => c.UserId == _abpSession.UserId.Value).ToList();
-            var model = new MyTaskSheetListViewModel();
+            var model = new MyTaskSheetListViewModel()
+            {
+                UserId = _abpSession.UserId.Value
+            };
             return View(model);
         }
 
         public async Task<ActionResult> EditModal(int taskId)
         {
             var task = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
-            var model = new EditTaskSheetModalViewModel
+            task.UserId = _abpSession.UserId.Value;
+            var model = new EditMyTaskSheetModalViewModel
             {
                 TaskSheet = task
             };

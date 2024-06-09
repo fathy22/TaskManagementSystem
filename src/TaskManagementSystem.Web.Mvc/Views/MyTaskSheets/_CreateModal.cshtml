@@ -11,6 +11,7 @@
         <div class="modal-content">
             @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Create New Task"))
             <form name="taskSheetCreateForm" role="form" class="form-horizontal">
+                <input id="UserId" type="hidden" name="UserId" value="@Model.UserId" />
                 <div class="modal-body">
                     <div class="form-group row required">
                         <label class="col-md-3 col-form-label" for="Title">Title</label>
