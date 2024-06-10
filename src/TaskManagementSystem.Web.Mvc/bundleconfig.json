@@ -31,7 +31,8 @@
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.blockUI.js",
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.spin.js",
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.sweet-alert.js",
-      "wwwroot/js/main.js"
+      "wwwroot/js/main.js",
+      "wwwroot/js/apply-works.js"
     ]
   },
   {
@@ -80,13 +81,14 @@
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.spin.js",
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.sweet-alert.js",
       "wwwroot/libs/abp-web-resources/Abp/Framework/scripts/libs/abp.signalr-client.js",
-      
+
       "wwwroot/libs/jquery-validate/jquery.validate.js",
       "wwwroot/libs/jquery-validate/jquery.validate.unobtrusive.js",
       "wwwroot/libs/push.js/push.js",
 
       "wwwroot/js/abp.dataTable.js",
       "wwwroot/js/main.js",
+      "wwwroot/js/apply-works.js",
       "wwwroot/view-resources/Views/Shared/_Layout.js"
     ]
   },

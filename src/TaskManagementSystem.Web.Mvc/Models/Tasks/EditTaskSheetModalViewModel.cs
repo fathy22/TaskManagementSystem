@@ -10,6 +10,7 @@ namespace TaskManagementSystem.Web.Models.TaskSheets
     {
         public TaskSheetDto TaskSheet { get; set; }
         public IReadOnlyList<TeamDto> Teams { get; set; }
+        public List<TaskSheetDto> DependentTask { get; set; }
         public IReadOnlyList<UserDto> Users { get; set; }
     }
 }

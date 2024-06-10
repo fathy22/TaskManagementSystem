@@ -5,7 +5,7 @@ using TaskManagementSystem.Tasks.Dto;
 
 namespace TaskManagementSystem.Tasks
 {
-    public interface ITaskSheetAppService : IAsyncCrudAppService<TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, UpdateTaskSheetDto>
+    public interface ITaskSheetAppService : IAsyncCrudAppService<TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, TaskSheetDto>
     {
     }
 }

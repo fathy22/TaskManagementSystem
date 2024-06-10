@@ -2,6 +2,7 @@
 using Abp.Dependency;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
+using TaskManagementSystem.Attachments;
 using TaskManagementSystem.Authorization;
 using TaskManagementSystem.Tasks;
 using TaskManagementSystem.Teams;
@@ -18,6 +19,7 @@ namespace TaskManagementSystem
             Configuration.Authorization.Providers.Add<TaskManagementSystemAuthorizationProvider>();
             IocManager.Register<ITaskSheetAppService, TaskSheetsAppService>(DependencyLifeStyle.Transient);
             IocManager.Register<ITeamAppService, TeamAppService>(DependencyLifeStyle.Transient);
+            IocManager.Register<IAttachmentAppService, AttachmentAppService>(DependencyLifeStyle.Transient);
         }
 
         public override void Initialize()

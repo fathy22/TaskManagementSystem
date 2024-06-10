@@ -22,5 +22,6 @@ namespace TaskManagementSystem.Tasks.Dto
         public long? UserId { get; set; }
         public int? AttachmentId { get; set; }
         public int? TeamId { get; set; }
+        public int? DependentTaskId { get; set; }
     }
 }

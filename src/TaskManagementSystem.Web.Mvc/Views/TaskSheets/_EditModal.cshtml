@@ -6,6 +6,8 @@
     Layout = null;
     var taskSheetStatuses = Enum.GetValues(typeof(TaskSheetStatus)).Cast<TaskSheetStatus>().ToList();
     var TaskPriorities = Enum.GetValues(typeof(TaskPriority)).Cast<TaskPriority>().ToList();
+    Model.DependentTask.RemoveAll(c => c.Id == Model.TaskSheet.Id);
+
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Edit Task"))
 <form name="TaskSheetEditForm" role="form" class="form-horizontal">
@@ -26,7 +28,7 @@
         <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="DueDate">Due Date</label>
             <div class="col-md-9">
-                <input id="DueDate" type="date" name="DueDate" value="@Model.TaskSheet.DueDate" class="form-control" required>
+                <input id="DueDate" type="date" name="DueDate" value="@Model.TaskSheet.DueDate.ToString("yyyy-MM-dd")" class="form-control" required>
             </div>
         </div>
         <div class="form-group row required">
@@ -81,13 +83,33 @@
                 </select>
             </div>
         </div>
-        <div class="form-group row required">
-            <label class="col-md-3 col-form-label" for="AttachmentId">Attachment</label>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label"> Depend on another Task?</label>
             <div class="col-md-9">
-                <input type="file" accept="*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-                <button type="button" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;" (click)="file.click()">
-                    UploadFile
-                </button>
+                <input type="checkbox" id="editToggleCheckbox" onclick="toggleDependentTaskDivForEdit()" />
+            </div>
+        </div>
+        <div class="form-group row" id="editDependentTaskDiv" style="display:none;">
+            <label class="col-md-3 col-form-label" for="DependentTaskId">Dependent Task</label>
+            <div class="col-md-9">
+                <select id="DependentTaskId" name="DependentTaskId" class="form-control">
+                    <option value="0">Select</option>
+                    @foreach (var task in Model.DependentTask)
+                    {
+                        <option value="@task.Id">@task.Title</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="form-group row required">
+                <label class="col-md-3 col-form-label" for="AttachmentId">Attachment</label>
+                <div class="col-md-9">
+                    <input type="file" accept="*" #file placeholder="Choose file" (change)="uploadAttachment(file.files)" style="display:none;">
+                    <button type="button" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;" (click)="file.click()">
+                        UploadFile
+                    </button>
+                </div>
             </div>
         </div>
     </div>

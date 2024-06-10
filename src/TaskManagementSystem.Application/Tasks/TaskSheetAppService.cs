@@ -20,7 +20,7 @@ using Abp.UI;
 using System;
 namespace TaskManagementSystem.Tasks
 {
-    public class TaskSheetsAppService : AsyncCrudAppService<TaskSheet, TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, UpdateTaskSheetDto>, ITaskSheetAppService
+    public class TaskSheetsAppService : AsyncCrudAppService<TaskSheet, TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, TaskSheetDto>, ITaskSheetAppService
     {
 
         public TaskSheetsAppService(
@@ -49,7 +49,7 @@ namespace TaskManagementSystem.Tasks
           
         }
 
-        public async override Task<TaskSheetDto> UpdateAsync(UpdateTaskSheetDto input)
+        public async override Task<TaskSheetDto> UpdateAsync(TaskSheetDto input)
         {
             using (var unitOfWork = UnitOfWorkManager.Begin())
             {

@@ -25,7 +25,6 @@ namespace TaskManagementSystem.Mapping
 
             //Task
             CreateMap<CreateTaskSheetDto, TaskSheet>();
-            CreateMap<UpdateTaskSheetDto, TaskSheet>();
             CreateMap<TaskSheetDto, TaskSheet>();
         }
     }

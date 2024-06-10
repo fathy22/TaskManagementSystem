@@ -37,7 +37,8 @@ namespace TaskManagementSystem.Web.Controllers
             var model = new TaskSheetListViewModel
             {
                 Teams = teams.Items,
-                Users = users.Items
+                Users = users.Items,
+                DependentTask = tasks.Items,
             };
             return View(model);
         }
@@ -47,11 +48,13 @@ namespace TaskManagementSystem.Web.Controllers
             var task = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
             var users = await _userAppService.GetAllAsync(new Users.Dto.PagedUserResultRequestDto());
             var teams = await _teamAppService.GetAllAsync(new Teams.Dto.PagedTeamResultRequestDto());
+            var tasks = await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto());
             var model = new EditTaskSheetModalViewModel
             {
                 TaskSheet = task,
                 Teams = teams.Items,
-                Users = users.Items
+                Users = users.Items,
+                DependentTask = tasks.Items.ToList()
             };
             return PartialView("_EditModal", model);
         }
