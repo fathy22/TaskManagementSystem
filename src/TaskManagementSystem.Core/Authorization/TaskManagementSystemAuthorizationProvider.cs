@@ -15,7 +15,6 @@ namespace TaskManagementSystem.Authorization
             context.CreatePermission(PermissionNames.Pages_MyTaskSheets, L("MyTasks"));
             context.CreatePermission(PermissionNames.Pages_TeamTaskSheets, L("TeamTasks"));
             context.CreatePermission(PermissionNames.Pages_Teams, L("Teams"));
-            context.CreatePermission(PermissionNames.Pages_Tenants, L("Tenants"), multiTenancySides: MultiTenancySides.Host);
         }
 
         private static ILocalizableString L(string name)

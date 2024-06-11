@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TaskManagementSystem.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using TaskManagementSystem.EntityFrameworkCore;
 namespace TaskManagementSystem.Migrations
 {
     [DbContext(typeof(TaskManagementSystemDbContext))]
-    partial class TaskManagementSystemDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240611100904_addCustomLogTable")]
+    partial class addCustomLogTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -8,7 +8,6 @@ using TaskManagementSystem.MultiTenancy;
 
 namespace TaskManagementSystem.Web.Controllers
 {
-    [AbpMvcAuthorize(PermissionNames.Pages_Tenants)]
     public class TenantsController : TaskManagementSystemControllerBase
     {
         private readonly ITenantAppService _tenantAppService;

@@ -6,6 +6,7 @@ using TaskManagementSystem.MultiTenancy;
 using TaskManagementSystem.Tasks;
 using TaskManagementSystem.Teams;
 using TaskManagementSystem.Attachments;
+using TaskManagementSystem.AuditLogs;
 
 namespace TaskManagementSystem.EntityFrameworkCore
 {
@@ -16,6 +17,7 @@ namespace TaskManagementSystem.EntityFrameworkCore
         public DbSet<Attachment> Attachments { get; set; }
         public DbSet<TaskComment> TaskComments { get; set; }
         public DbSet<TeamMember> TeamMembers { get; set; }
+        public DbSet<CustomLog> CustomLogs { get; set; }
 
 
         public TaskManagementSystemDbContext(DbContextOptions<TaskManagementSystemDbContext> options)
