@@ -1,0 +1,22 @@
+﻿
+@using TaskManagementSystem.Web.Models.Common.Modals
+@model TaskManagementSystem.Web.Models.TaskSheets.AddCommentModalViewModel
+<div class="modal fade" id="TaskSheetAddCommentModal" tabindex="-1" role="dialog" aria-labelledby="TaskSheetAddCommentModalLabel" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Add Comment"))
+            <form name="taskSheetCreateForm" role="form" class="form-horizontal">
+                <input type="hidden" id="attachmentId" name="attachmentId" />
+                <div class="modal-body">
+                    <div class="form-group row required">
+                        <label class="col-md-3 col-form-label" for="Comment">Comment</label>
+                        <div class="col-md-9">
+                            <input id="Comment" type="text" name="Comment" class="form-control" required maxlength="32" minlength="2">
+                        </div>
+                    </div>
+                </div>
+                @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
+            </form>
+        </div>
+    </div>
+</div>

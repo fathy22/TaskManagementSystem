@@ -60,6 +60,9 @@
                         `   <button type="button" class="btn btn-sm bg-danger delete-taskSheet" data-taskSheet-id="${row.id}" data-taskSheet-title="${row.title}">`,
                         `       <i class="fas fa-trash"></i> ${l('Delete')}`,
                         '   </button>',
+                        `   <button type="button" class="btn btn-sm bg-secondary add-comment-taskSheet" data-taskSheet-id="${row.id}" data-toggle="modal" data-target="#TaskSheetAddCommentModal">`,
+                        `       <i class="fas fa-pencil-alt"></i> ${l('AddComment')}`,
+                        '   </button>',
                     ].join('');
                 }
             }
@@ -113,6 +116,15 @@
         })
     });
 
+    $(document).on('click', '.add-comment-taskSheet', function (e) {
+
+        var taskSheetId = $(this).attr("data-taskSheet-id");
+        $('#TaskSheetAddCommentModal div.modal-content');
+    });
+
+    abp.event.on('taskSheet.edited', (data) => {
+        _$taskSheetsTable.ajax.reload();
+    });
     abp.event.on('teamTaskSheet.edited', (data) => {
         _$teamTaskSheetsTable.ajax.reload();
     });

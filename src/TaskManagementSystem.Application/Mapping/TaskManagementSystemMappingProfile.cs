@@ -10,6 +10,7 @@ using TaskManagementSystem.Tasks.Dto;
 using TaskManagementSystem.Tasks;
 using TaskManagementSystem.CustomLogs.Dto;
 using TaskManagementSystem.CustomLogs;
+using TaskManagementSystem.TasksComment.Dto;
 
 namespace TaskManagementSystem.Mapping
 {
@@ -31,6 +32,11 @@ namespace TaskManagementSystem.Mapping
             //CustomLog
             CreateMap<CreateCustomLogDto, CustomLog>();
             CreateMap<CustomLogDto, CustomLog>();
+
+
+            //TaskComment
+            CreateMap<CreateTaskCommentDto, TaskComment>();
+            CreateMap<TaskCommentDto, TaskComment>();
         }
     }
 }
