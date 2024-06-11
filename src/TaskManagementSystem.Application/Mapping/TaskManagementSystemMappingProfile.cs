@@ -17,7 +17,6 @@ namespace TaskManagementSystem.Mapping
         {
             //Team
             CreateMap<CreateTeamDto, Team>();
-            CreateMap<UpdateTeamDto, Team>();
             CreateMap<TeamDto, Team>();
 
             //TeamMember

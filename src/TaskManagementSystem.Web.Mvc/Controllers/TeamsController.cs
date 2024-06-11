@@ -66,10 +66,5 @@ namespace TaskManagementSystem.Web.Controllers
             }
            
         }
-
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
     }
 }

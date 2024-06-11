@@ -122,5 +122,6 @@
 	  <text name="MyTasks">My Tasks</text>
 	  <text name="TeamTasks">Team Tasks</text>
 	  <text name="Teams">Teams</text>
+	  <text name="Logs">Logs</text>
   </texts>
 </localizationDictionary>

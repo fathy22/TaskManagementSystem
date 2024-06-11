@@ -20,17 +20,23 @@ using Abp.UI;
 using System;
 using TaskManagementSystem.Teams.Dto;
 using TaskManagementSystem.Users.Dto;
+using TaskManagementSystem.CustomLogs;
+using Abp.Runtime.Session;
 
 namespace TaskManagementSystem.Teams
 {
     //[AbpAuthorize(PermissionNames.Pages_Teams)]
-    public class TeamAppService : AsyncCrudAppService<Team, TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, UpdateTeamDto>, ITeamAppService
+    public class TeamAppService : AsyncCrudAppService<Team, TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, TeamDto>, ITeamAppService
     {
-
+        private readonly ICustomLogAppService _customLogAppService;
+        private readonly IAbpSession _abpSession;   
         public TeamAppService(
             IRepository<Team, int> repository
-        ) : base(repository)
+          , ICustomLogAppService customLogAppService,
+IAbpSession abpSession) : base(repository)
         {
+            _customLogAppService = customLogAppService;
+            _abpSession = abpSession;
         }
 
         public async override Task<TeamDto> CreateAsync(CreateTeamDto input)
@@ -42,6 +48,11 @@ namespace TaskManagementSystem.Teams
                 await Repository.InsertAsync(Team);
 
                 CurrentUnitOfWork.SaveChanges();
+                var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+                await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                {
+                    Description= $"{user.FullName} Create New Team"
+                });
 
                 return MapToEntityDto(Team);
             }
@@ -53,7 +64,7 @@ namespace TaskManagementSystem.Teams
           
         }
 
-        public async override Task<TeamDto> UpdateAsync(UpdateTeamDto input)
+        public async override Task<TeamDto> UpdateAsync(TeamDto input)
         {
             using (var unitOfWork = UnitOfWorkManager.Begin())
             {
@@ -65,6 +76,11 @@ namespace TaskManagementSystem.Teams
                     ObjectMapper.Map(input, Team);
 
                     await Repository.UpdateAsync(Team);
+                    var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+                    await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                    {
+                        Description = $"{user.FullName} Update Team to {Team.Name}"
+                    });
 
                     await unitOfWork.CompleteAsync();
 

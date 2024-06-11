@@ -6,7 +6,7 @@ using TaskManagementSystem.MultiTenancy;
 using TaskManagementSystem.Tasks;
 using TaskManagementSystem.Teams;
 using TaskManagementSystem.Attachments;
-using TaskManagementSystem.AuditLogs;
+using TaskManagementSystem.CustomLogs;
 
 namespace TaskManagementSystem.EntityFrameworkCore
 {

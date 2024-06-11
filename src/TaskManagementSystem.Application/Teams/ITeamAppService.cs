@@ -9,7 +9,7 @@ using TaskManagementSystem.Users.Dto;
 
 namespace TaskManagementSystem.Teams
 {
-    public interface ITeamAppService : IAsyncCrudAppService<TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, UpdateTeamDto>
+    public interface ITeamAppService : IAsyncCrudAppService<TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, TeamDto>
     {
         Task<TeamShowDto> GetTeamMembersByByTeamLeaderId(long teamLeaderId);
     }
