@@ -27,6 +27,18 @@
                 </select>
             </div>
         </div>
+        <div class="form-group row required">
+            <label class="col-md-3 col-form-label" for="TeamMembers">Team Members</label>
+            <div class="col-md-9">
+                <select id="TeamMembers" name="TeamMembers" class="form-control" required>
+                    <option value="">Select</option>
+                    @foreach (var user in Model.RegularUsers)
+                    {
+                        <option value="@user.Id">@user.FullName</option>
+                    }
+                </select>
+            </div>
+        </div>
     </div>
     @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")
 </form>

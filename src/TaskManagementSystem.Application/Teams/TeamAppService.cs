@@ -104,10 +104,10 @@ IAbpSession abpSession) : base(repository)
 
         protected override IQueryable<Team> CreateFilteredQuery(PagedTeamResultRequestDto input)
         {
-            return Repository
+            var teams =  Repository
                 .GetAll()
-                 .OrderByDescending(c => c.Id)
-                .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword));
+                 .OrderByDescending(c => c.Id);
+            return teams;
         }
         protected override async Task<Team> GetEntityByIdAsync(int id)
         {

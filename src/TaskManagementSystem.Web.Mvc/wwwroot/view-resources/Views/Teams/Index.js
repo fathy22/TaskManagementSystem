@@ -59,7 +59,7 @@
     });
 
     _$form.find('.save-button').on('click', (e) => {
-      
+        debugger;
         e.preventDefault();
 
         if (!_$form.valid()) {
