@@ -1,17 +1,24 @@
 ﻿(function ($) {
     debugger;
-    document.getElementById('uploadButton').addEventListener('click', () => {
-        const fileInput = document.getElementById('fileInput');
-        fileInput.click();
-    });
+    const uploadButton = document.getElementById('uploadButton');
+    if (uploadButton) {
+        uploadButton.addEventListener('click', () => {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput) {
+                fileInput.click();
+            }
+        });
+    }
 
-    document.getElementById('fileInput').addEventListener('change', () => {
-
-        const file = document.getElementById('fileInput').files[0];
-        if (file) {
-            uploadAttachment(file);
-        }
-    });
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                uploadAttachment(file);
+            }
+        });
+    }
     function uploadAttachment(file) {
 
         const formData = new FormData();

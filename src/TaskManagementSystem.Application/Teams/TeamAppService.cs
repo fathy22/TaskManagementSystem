@@ -93,6 +93,12 @@ IAbpSession abpSession) : base(repository)
         }
         public override Task DeleteAsync(EntityDto<int> input)
         {
+            var item = Repository.GetAsync(input.Id).Result;
+            var user = _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value).Result;
+             _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{user.FullName} Deleted Team : {item.Name}"
+            });
             return base.DeleteAsync(input);
         }
 
@@ -100,6 +106,7 @@ IAbpSession abpSession) : base(repository)
         {
             return Repository
                 .GetAll()
+                 .OrderByDescending(c => c.Id)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword));
         }
         protected override async Task<Team> GetEntityByIdAsync(int id)

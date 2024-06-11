@@ -108,7 +108,11 @@ namespace TaskManagementSystem.Roles
             {
                 CheckErrors(await _userManager.RemoveFromRoleAsync(user, role.NormalizedName));
             }
-
+            var loggedUser = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{loggedUser.FullName} Deleted Role : {role.Name}"
+            });
             CheckErrors(await _roleManager.DeleteAsync(role));
         }
 
@@ -124,6 +128,7 @@ namespace TaskManagementSystem.Roles
         protected override IQueryable<Role> CreateFilteredQuery(PagedRoleResultRequestDto input)
         {
             return Repository.GetAllIncluding(x => x.Permissions)
+                 .OrderByDescending(c => c.Id)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Name.Contains(input.Keyword)
                 || x.DisplayName.Contains(input.Keyword)
                 || x.Description.Contains(input.Keyword));

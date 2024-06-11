@@ -54,7 +54,9 @@ namespace TaskManagementSystem.CustomLogs
         }
         public async Task<PagedResultDto<CustomLogDto>> GetAllCustomLogs(PagedCustomLogResultRequestDto input)
         {
-            var log = _customLogRepository.GetAll().OrderBy(c=>c.Id).PageBy(input);
+            var log = _customLogRepository.GetAll()
+                .WhereIf(!input.Keyword.IsNullOrEmpty(),at=>at.Description.Contains(input.Keyword))
+                .OrderByDescending(c=>c.Id).PageBy(input);
             int count = await log.CountAsync();
             var list =await log.ToListAsync();
             var dto = list.Select(c=> new CustomLogDto

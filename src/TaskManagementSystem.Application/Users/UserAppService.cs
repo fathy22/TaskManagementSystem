@@ -97,7 +97,7 @@ namespace TaskManagementSystem.Users
             var loggedUser = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
             await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
             {
-                Description = $"{loggedUser.FullName} Updated Task from {oldName} to {user.Name}"
+                Description = $"{loggedUser.FullName} Updated User from {oldName} to {user.Name}"
             });
             if (input.RoleNames != null)
             {
@@ -109,8 +109,22 @@ namespace TaskManagementSystem.Users
 
         public override async Task DeleteAsync(EntityDto<long> input)
         {
-            var user = await _userManager.GetUserByIdAsync(input.Id);
-            await _userManager.DeleteAsync(user);
+            try
+            {
+                var user = await _userManager.GetUserByIdAsync(input.Id);
+                var loggedUser = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+                await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                {
+                    Description = $"{loggedUser.FullName} Deleted User : {user.FullName}"
+                });
+                await _userManager.DeleteAsync(user);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+         
         }
 
         [AbpAuthorize(PermissionNames.Pages_Users_Activation)]
@@ -174,6 +188,7 @@ namespace TaskManagementSystem.Users
         protected override IQueryable<User> CreateFilteredQuery(PagedUserResultRequestDto input)
         {
             return Repository.GetAllIncluding(x => x.Roles)
+                .OrderByDescending(c=>c.Id)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
                 .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive);
         }

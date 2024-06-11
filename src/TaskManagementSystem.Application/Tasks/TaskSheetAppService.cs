@@ -90,6 +90,12 @@ namespace TaskManagementSystem.Tasks
         }
         public override Task DeleteAsync(EntityDto<int> input)
         {
+            var item = Repository.GetAsync(input.Id).Result;
+            var user = _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value).Result;
+            _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{user.FullName} Deleted Task : {item.Title}"
+            });
             return base.DeleteAsync(input);
         }
 
@@ -98,6 +104,7 @@ namespace TaskManagementSystem.Tasks
             return Repository
                 .GetAll()
                 .Include(c=>c.Team)
+                .OrderByDescending(c => c.Id)
                 .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.Title.Contains(input.Keyword))
                 .WhereIf(input.UserId.HasValue, x => x.UserId == input.UserId)
                 .WhereIf(input.TeamId.HasValue, x => x.TeamId == input.TeamId);
