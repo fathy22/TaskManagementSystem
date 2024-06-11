@@ -18,15 +18,24 @@ using TaskManagementSystem.Roles.Dto;
 using Abp.Domain.Uow;
 using Abp.UI;
 using System;
+using Abp.Runtime.Session;
+using TaskManagementSystem.CustomLogs;
+using TaskManagementSystem.Teams;
+
 namespace TaskManagementSystem.Tasks
 {
     public class TaskSheetsAppService : AsyncCrudAppService<TaskSheet, TaskSheetDto, int, PagedTaskSheetResultRequestDto, CreateTaskSheetDto, TaskSheetDto>, ITaskSheetAppService
     {
+        private readonly ICustomLogAppService _customLogAppService;
+        private readonly IAbpSession _abpSession;
 
         public TaskSheetsAppService(
             IRepository<TaskSheet, int> repository
-        ) : base(repository)
+       , ICustomLogAppService customLogAppService,
+              IAbpSession abpSession) : base(repository)
         {
+            _customLogAppService = customLogAppService;
+            _abpSession = abpSession;
         }
 
         public async override Task<TaskSheetDto> CreateAsync(CreateTaskSheetDto input)
@@ -38,6 +47,11 @@ namespace TaskManagementSystem.Tasks
                 await Repository.InsertAsync(TaskSheet);
 
                 CurrentUnitOfWork.SaveChanges();
+                var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+                await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                {
+                    Description = $"{user.FullName} Created New Task : {input.Title}"
+                });
 
                 return MapToEntityDto(TaskSheet);
             }
@@ -55,13 +69,15 @@ namespace TaskManagementSystem.Tasks
             {
                 try
                 {
-
                     var TaskSheet = await Repository.GetAsync(input.Id);
-
+                    var oldName = TaskSheet.Title;
                     ObjectMapper.Map(input, TaskSheet);
-
                     await Repository.UpdateAsync(TaskSheet);
-
+                    var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+                    await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                    {
+                        Description = $"{user.FullName} Updated Task from {oldName} to {TaskSheet.Title}"
+                    });
                     await unitOfWork.CompleteAsync();
 
                     return MapToEntityDto(TaskSheet);

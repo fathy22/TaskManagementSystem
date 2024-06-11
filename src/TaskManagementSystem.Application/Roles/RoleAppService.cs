@@ -14,20 +14,27 @@ using TaskManagementSystem.Authorization.Users;
 using TaskManagementSystem.Roles.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Abp.Runtime.Session;
+using TaskManagementSystem.CustomLogs;
+using TaskManagementSystem.Tasks;
 
 namespace TaskManagementSystem.Roles
 {
     //[AbpAuthorize(PermissionNames.Pages_Roles)]
     public class RoleAppService : AsyncCrudAppService<Role, RoleDto, int, PagedRoleResultRequestDto, CreateRoleDto, RoleDto>, IRoleAppService
     {
+        private readonly ICustomLogAppService _customLogAppService;
+        private readonly IAbpSession _abpSession;
         private readonly RoleManager _roleManager;
         private readonly UserManager _userManager;
 
-        public RoleAppService(IRepository<Role> repository, RoleManager roleManager, UserManager userManager)
+        public RoleAppService(ICustomLogAppService customLogAppService, IAbpSession abpSession, IRepository<Role> repository, RoleManager roleManager, UserManager userManager)
             : base(repository)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _customLogAppService = customLogAppService;
+            _abpSession = abpSession;
         }
 
         public override async Task<RoleDto> CreateAsync(CreateRoleDto input)
@@ -43,7 +50,11 @@ namespace TaskManagementSystem.Roles
                 .GetAllPermissions()
                 .Where(p => input.GrantedPermissions.Contains(p.Name))
                 .ToList();
-
+            var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{user.FullName} Created New Role : {input.Name}"
+            });
             await _roleManager.SetGrantedPermissionsAsync(role, grantedPermissions);
 
             return MapToEntityDto(role);
@@ -67,11 +78,15 @@ namespace TaskManagementSystem.Roles
             CheckUpdatePermission();
 
             var role = await _roleManager.GetRoleByIdAsync(input.Id);
-
+            var oldName = role.Name;
             ObjectMapper.Map(input, role);
 
             CheckErrors(await _roleManager.UpdateAsync(role));
-
+            var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{user.FullName} Updated Task from {oldName} to {role.Name}"
+            });
             var grantedPermissions = PermissionManager
                 .GetAllPermissions()
                 .Where(p => input.GrantedPermissions.Contains(p.Name))

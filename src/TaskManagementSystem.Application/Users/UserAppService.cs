@@ -22,10 +22,11 @@ using TaskManagementSystem.Roles.Dto;
 using TaskManagementSystem.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TaskManagementSystem.CustomLogs;
+using System.Data;
 
 namespace TaskManagementSystem.Users
 {
-    //[AbpAuthorize(PermissionNames.Pages_Users)]
     public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
     {
         private readonly UserManager _userManager;
@@ -34,6 +35,8 @@ namespace TaskManagementSystem.Users
         private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAbpSession _abpSession;
         private readonly LogInManager _logInManager;
+        private readonly ICustomLogAppService _customLogAppService;
+
 
         public UserAppService(
             IRepository<User, long> repository,
@@ -42,7 +45,8 @@ namespace TaskManagementSystem.Users
             IRepository<Role> roleRepository,
             IPasswordHasher<User> passwordHasher,
             IAbpSession abpSession,
-            LogInManager logInManager)
+            LogInManager logInManager,
+            ICustomLogAppService customLogAppService)
             : base(repository)
         {
             _userManager = userManager;
@@ -51,6 +55,7 @@ namespace TaskManagementSystem.Users
             _passwordHasher = passwordHasher;
             _abpSession = abpSession;
             _logInManager = logInManager;
+            _customLogAppService = customLogAppService;
         }
 
         public override async Task<UserDto> CreateAsync(CreateUserDto input)
@@ -70,7 +75,11 @@ namespace TaskManagementSystem.Users
             {
                 CheckErrors(await _userManager.SetRolesAsync(user, input.RoleNames));
             }
-
+            var loggedUser = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{loggedUser.FullName} Created New User : {input.Name}"
+            });
             CurrentUnitOfWork.SaveChanges();
 
             return MapToEntityDto(user);
@@ -81,11 +90,15 @@ namespace TaskManagementSystem.Users
             CheckUpdatePermission();
 
             var user = await _userManager.GetUserByIdAsync(input.Id);
-
+            var oldName = user.Name;
             MapToEntity(input, user);
 
             CheckErrors(await _userManager.UpdateAsync(user));
-
+            var loggedUser = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{loggedUser.FullName} Updated Task from {oldName} to {user.Name}"
+            });
             if (input.RoleNames != null)
             {
                 CheckErrors(await _userManager.SetRolesAsync(user, input.RoleNames));

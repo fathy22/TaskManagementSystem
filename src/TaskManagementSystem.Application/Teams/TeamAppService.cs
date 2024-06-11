@@ -25,7 +25,6 @@ using Abp.Runtime.Session;
 
 namespace TaskManagementSystem.Teams
 {
-    //[AbpAuthorize(PermissionNames.Pages_Teams)]
     public class TeamAppService : AsyncCrudAppService<Team, TeamDto, int, PagedTeamResultRequestDto, CreateTeamDto, TeamDto>, ITeamAppService
     {
         private readonly ICustomLogAppService _customLogAppService;
@@ -51,7 +50,7 @@ IAbpSession abpSession) : base(repository)
                 var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
                 await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
                 {
-                    Description= $"{user.FullName} Create New Team"
+                    Description= $"{user.FullName} Created New Team : {input.Name}"
                 });
 
                 return MapToEntityDto(Team);
@@ -71,20 +70,20 @@ IAbpSession abpSession) : base(repository)
                 try
                 {
 
-                    var Team = await Repository.GetAsync(input.Id);
+                    var team = await Repository.GetAsync(input.Id);
+                    var oldName = team.Name;
+                    ObjectMapper.Map(input, team);
 
-                    ObjectMapper.Map(input, Team);
-
-                    await Repository.UpdateAsync(Team);
+                    await Repository.UpdateAsync(team);
                     var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
                     await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
                     {
-                        Description = $"{user.FullName} Update Team to {Team.Name}"
+                        Description = $"{user.FullName} Updated Team from {oldName} to {team.Name}"
                     });
 
                     await unitOfWork.CompleteAsync();
 
-                    return MapToEntityDto(Team);
+                    return MapToEntityDto(team);
                 }
                 catch (Exception ex)
                 {

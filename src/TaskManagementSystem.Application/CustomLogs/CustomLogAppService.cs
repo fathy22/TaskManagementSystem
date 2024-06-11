@@ -37,13 +37,13 @@ namespace TaskManagementSystem.CustomLogs
         {
             try
             {
-                var Team = ObjectMapper.Map<CustomLog>(input);
+                var log = ObjectMapper.Map<CustomLog>(input);
 
-                await _customLogRepository.InsertAsync(Team);
+                await _customLogRepository.InsertAsync(log);
 
                 CurrentUnitOfWork.SaveChanges();
 
-                return ObjectMapper.Map<CustomLogDto>(input);
+                return ObjectMapper.Map<CustomLogDto>(log);
             }
             catch (Exception ex)
             {

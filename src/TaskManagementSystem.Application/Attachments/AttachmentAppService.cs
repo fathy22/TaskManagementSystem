@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using Abp.Domain.Repositories;
+using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -8,15 +9,20 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManagementSystem.CustomLogs;
 
 namespace TaskManagementSystem.Attachments
 {
     public class AttachmentAppService : ApplicationService, IAttachmentAppService
     {
         private readonly IRepository<Attachment, int> _attachmentRepository;
-        public AttachmentAppService(IRepository<Attachment, int> attachmentRepository)
+        private readonly ICustomLogAppService _customLogAppService;
+        private readonly IAbpSession _abpSession;
+        public AttachmentAppService(ICustomLogAppService customLogAppService,IRepository<Attachment, int> attachmentRepository, IAbpSession abpSession)
         {
             _attachmentRepository = attachmentRepository;
+            _customLogAppService = customLogAppService;
+            _abpSession = abpSession;
         }
 
         public async Task<int> UploadAttachmentAsync(IFormFile file)
@@ -45,7 +51,11 @@ namespace TaskManagementSystem.Attachments
                 Length = file.Length,
                 Extension= postedFileExtension
             };
-
+            var user = await _customLogAppService.GetCurrentUserName(_abpSession.UserId.Value);
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description = $"{user.FullName} Uploaded New Attachment : {attachment.Name}"
+            });
             await _attachmentRepository.InsertAsync(attachment);
             await CurrentUnitOfWork.SaveChangesAsync();
 

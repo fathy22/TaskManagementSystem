@@ -8,6 +8,8 @@ using TaskManagementSystem.Teams.Dto;
 using TaskManagementSystem.Teams;
 using TaskManagementSystem.Tasks.Dto;
 using TaskManagementSystem.Tasks;
+using TaskManagementSystem.CustomLogs.Dto;
+using TaskManagementSystem.CustomLogs;
 
 namespace TaskManagementSystem.Mapping
 {
@@ -25,6 +27,10 @@ namespace TaskManagementSystem.Mapping
             //Task
             CreateMap<CreateTaskSheetDto, TaskSheet>();
             CreateMap<TaskSheetDto, TaskSheet>();
+
+            //CustomLog
+            CreateMap<CreateCustomLogDto, CustomLog>();
+            CreateMap<CustomLogDto, CustomLog>();
         }
     }
 }
