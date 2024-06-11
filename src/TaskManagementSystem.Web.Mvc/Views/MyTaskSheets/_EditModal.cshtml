@@ -6,11 +6,13 @@
     Layout = null;
     var taskSheetStatuses = Enum.GetValues(typeof(TaskSheetStatus)).Cast<TaskSheetStatus>().ToList();
     var TaskPriorities = Enum.GetValues(typeof(TaskPriority)).Cast<TaskPriority>().ToList();
+    Model.DependentTask.RemoveAll(c => c.Id == Model.TaskSheet.Id);
 }
 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Edit My Task"))
 <form name="MyTaskSheetEditForm" role="form" class="form-horizontal">
     <input type="hidden" name="Id" value="@Model.TaskSheet.Id" />
     <input id="UserId" type="hidden" name="UserId" value="@Model.TaskSheet.UserId" />
+    <input type="hidden" id="attachmentId" name="attachmentId" />
     <div class="modal-body">
         <div class="form-group row required">
             <label class="col-md-3 col-form-label" for="Title">Title</label>
@@ -34,7 +36,7 @@
             <label class="col-md-3 col-form-label" for="TaskStatus">Task Status</label>
             <div class="col-md-9">
                 <select id="TaskStatus" name="TaskStatus" class="form-control" required>
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     @foreach (var status in taskSheetStatuses)
                     {
                         var isSelected = status == Model.TaskSheet.TaskStatus ? true : false;
@@ -47,11 +49,29 @@
             <label class="col-md-3 col-form-label" for="TaskPriority">Task Priority</label>
             <div class="col-md-9">
                 <select id="TaskPriority" name="TaskPriority" class="form-control" required>
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     @foreach (var priority in TaskPriorities)
                     {
                         var isSelected = priority == Model.TaskSheet.TaskPriority ? true : false;
                         <option value="@(Convert.ToInt32(priority))" selected="@isSelected">@priority</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-form-label"> Depend on another Task?</label>
+            <div class="col-md-9">
+                <input type="checkbox" id="editToggleCheckbox" onclick="toggleDependentTaskDivForEdit()" />
+            </div>
+        </div>
+        <div class="form-group row" id="editDependentTaskDiv" style="display:none;">
+            <label class="col-md-3 col-form-label" for="DependentTaskId">Dependent Task</label>
+            <div class="col-md-9">
+                <select id="DependentTaskId" name="DependentTaskId" class="form-control">
+                    <option value="">Select</option>
+                    @foreach (var task in Model.DependentTask)
+                    {
+                        <option value="@task.Id">@task.Title</option>
                     }
                 </select>
             </div>

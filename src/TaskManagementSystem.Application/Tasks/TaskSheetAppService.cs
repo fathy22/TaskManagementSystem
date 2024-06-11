@@ -88,7 +88,9 @@ namespace TaskManagementSystem.Tasks
         }
         protected override async Task<TaskSheet> GetEntityByIdAsync(int id)
         {
-            return await Repository.GetAsync(id);
+            return await Repository
+                   .GetAll().Include(t => t.Attachment).Include(b=>b.Team)
+                   .FirstOrDefaultAsync(t => t.Id == id);
         }
 
     }

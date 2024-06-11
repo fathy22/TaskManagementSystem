@@ -1,5 +1,5 @@
 ﻿(function ($) {
-    debugger;
+  
     var _taskSheetService = abp.services.app.taskSheets,
         l = abp.localization.getSource('TaskManagementSystem'),
         _$modal = $('#TeamTaskSheetCreateModal'),
@@ -67,7 +67,7 @@
     });
 
     _$form.find('.save-button').on('click', (e) => {
-        debugger;
+      
         e.preventDefault();
 
         if (!_$form.valid()) {
@@ -90,7 +90,7 @@
     });
 
     $(document).on('click', '.delete-taskSheet', function () {
-        debugger;
+      
         var taskSheetId = $(this).attr("data-taskSheet-id");
         var taskSheetTitle = $(this).attr('data-taskSheet-title');
 
@@ -118,7 +118,7 @@
     });
 
     function deleteTaskSheet(taskSheetId, taskSheetTitle) {
-        debugger;
+      
         abp.message.confirm(
             abp.utils.formatString(
                 l('AreYouSureWantToDelete'),

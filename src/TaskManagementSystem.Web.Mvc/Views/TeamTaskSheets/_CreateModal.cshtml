@@ -12,6 +12,7 @@
             @await Html.PartialAsync("~/Views/Shared/Modals/_ModalHeader.cshtml", new ModalHeaderViewModel("Create New Task"))
             <form name="taskSheetCreateForm" role="form" class="form-horizontal">
                 <input id="TeamId" type="hidden" name="TeamId" value="@Model.TeamId" />
+                <input type="hidden" id="attachmentId" name="attachmentId" />
                 <div class="modal-body">
                     <div class="form-group row required">
                         <label class="col-md-3 col-form-label" for="Title">Title</label>
@@ -35,7 +36,7 @@
                         <label class="col-md-3 col-form-label" for="TaskStatus">Task Status</label>
                         <div class="col-md-9">
                             <select id="TaskStatus" name="TaskStatus" class="form-control" required>
-                                <option value="0">Select</option>
+                                <option value="">Select</option>
                                 @foreach (var status in taskSheetStatuses)
                                 {
                                     <option value="@(Convert.ToInt32(status))">@status</option>
@@ -47,7 +48,7 @@
                         <label class="col-md-3 col-form-label" for="TaskPriority">Task Priority</label>
                         <div class="col-md-9">
                             <select id="TaskPriority" name="TaskPriority" class="form-control" required>
-                                <option value="0">Select</option>
+                                <option value="">Select</option>
                                 @foreach (var priority in TaskPriorities)
                                 {
                                     <option value="@(Convert.ToInt32(priority))">@priority</option>
@@ -59,7 +60,7 @@
                         <label class="col-md-3 col-form-label" for="UserId">Users</label>
                         <div class="col-md-9">
                             <select id="UserId" name="UserId" class="form-control" required>
-                                <option value="0">Select</option>
+                                <option value="">Select</option>
                                 @foreach (var user in Model.TeamMembers)
                                 {
                                     <option value="@user.Id">@user.FullName</option>
@@ -67,15 +68,33 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="form-group row required">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label"> Depend on another Task?</label>
+                        <div class="col-md-9">
+                            <input type="checkbox" id="toggleCheckbox" onclick="toggleDependentTaskDiv()" />
+                        </div>
+                    </div>
+                    <div class="form-group row" id="dependentTaskDiv" style="display:none;">
+                        <label class="col-md-3 col-form-label" for="DependentTaskId">Dependent Task</label>
+                        <div class="col-md-9">
+                            <select id="DependentTaskId" name="DependentTaskId" class="form-control">
+                                <option value="">Select</option>
+                                @foreach (var task in Model.DependentTask)
+                                {
+                                    <option value="@task.Id">@task.Title</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="col-md-3 col-form-label" for="AttachmentId">Attachment</label>
                         <div class="col-md-9">
-                            <input type="file" accept="*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-                            <button type="button" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;" (click)="file.click()">
-                                UploadFile
+                            <input type="file" id="fileInput" style="display:none;">
+                            <button type="button" id="uploadButton" style="background-color: #032f70; border-color: transparent; color: #fff;border-radius: 15px;padding: 4px 2%;">
+                                Upload File
                             </button>
                         </div>
+                        <span id="uploadedFileName" style="margin-left: 10px;"></span>
                     </div>
                 </div>
                 @await Html.PartialAsync("~/Views/Shared/Modals/_ModalFooterWithSaveAndCancel.cshtml")

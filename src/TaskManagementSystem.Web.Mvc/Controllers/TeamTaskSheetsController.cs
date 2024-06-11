@@ -40,7 +40,8 @@ namespace TaskManagementSystem.Web.Controllers
             var model = new TeamTasksSheetListViewModel()
             {
                 TeamId = team.TeamId,
-                TeamMembers = team.TeamMembers
+                TeamMembers = team.TeamMembers,
+                DependentTask = tasks.Items,
             };
             return View(model);
         }
@@ -50,10 +51,12 @@ namespace TaskManagementSystem.Web.Controllers
             var task = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
             var team = await _teamAppService.GetTeamMembersByByTeamLeaderId(_abpSession.UserId.Value);
             task.TeamId = team.TeamId;
+            var tasks = await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto());
             var model = new EditTeamTaskSheetModalViewModel
             {
                 TaskSheet = task,
-                TeamMembers = team.TeamMembers
+                TeamMembers = team.TeamMembers,
+                DependentTask = tasks.Items.ToList()
             };
             return PartialView("_EditModal", model);
         }

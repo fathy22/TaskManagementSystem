@@ -9,5 +9,6 @@ namespace TaskManagementSystem.Web.Models.MyTaskSheets
     public class MyTaskSheetListViewModel
     {
         public long UserId { get; set; }
+        public IReadOnlyList<TaskSheetDto> DependentTask { get; set; }
     }
 }

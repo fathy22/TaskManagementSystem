@@ -9,5 +9,6 @@ namespace TaskManagementSystem.Web.Models.MyTaskSheets
     public class EditMyTaskSheetModalViewModel
     {
         public TaskSheetDto TaskSheet { get; set; }
+        public List<TaskSheetDto> DependentTask { get; set; }
     }
 }

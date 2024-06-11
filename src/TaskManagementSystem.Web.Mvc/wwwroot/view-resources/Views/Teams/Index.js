@@ -1,5 +1,5 @@
 ﻿(function ($) {
-    debugger;
+  
     var _teamService = abp.services.app.team,
         l = abp.localization.getSource('TaskManagementSystem'),
         _$modal = $('#TeamCreateModal'),
@@ -59,7 +59,7 @@
     });
 
     _$form.find('.save-button').on('click', (e) => {
-        debugger;
+      
         e.preventDefault();
 
         if (!_$form.valid()) {
@@ -90,7 +90,7 @@
     });
 
     $(document).on('click', '.edit-team', function (e) {
-        debugger;
+      
         var teamId = $(this).attr("data-team-id");
 
         e.preventDefault();

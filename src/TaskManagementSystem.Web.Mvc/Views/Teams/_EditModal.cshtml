@@ -18,7 +18,7 @@
             <label class="col-md-3 col-form-label" for="TeamLeaderId">Team Leader</label>
             <div class="col-md-9">
                 <select id="TeamLeaderId" name="TeamLeaderId" class="form-control" required>
-                    <option value="0">Select</option>
+                    <option value="">Select</option>
                     @foreach (var user in Model.TeamLeaders)
                     {
                         var isSelected = user.Id == Model.Team.TeamLeaderId ? true : false;

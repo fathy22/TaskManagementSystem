@@ -9,6 +9,6 @@ namespace TaskManagementSystem.Attachments
 {
     public interface IAttachmentAppService
     {
-        Task<string> UploadAttachmentAsync(IFormFile file);
+        Task<int> UploadAttachmentAsync(IFormFile file);
     }
 }

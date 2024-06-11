@@ -19,13 +19,17 @@ namespace TaskManagementSystem.Attachments
             _attachmentRepository = attachmentRepository;
         }
 
-        public async Task<string> UploadAttachmentAsync(IFormFile file)
+        public async Task<int> UploadAttachmentAsync(IFormFile file)
         {
             if (file == null || file.Length == 0)
             {
                 throw new UserFriendlyException("File is empty.");
             }
-
+            var postedFileExtension = Path.GetExtension(file.FileName);
+            if (postedFileExtension == ".exe" || postedFileExtension == ".dll" || postedFileExtension == ".ps1" || postedFileExtension == ".js")
+            {
+                throw new Exception("not allowed files");
+            }
             var filePath = Path.Combine("wwwroot", "attachments", file.FileName);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
@@ -37,14 +41,15 @@ namespace TaskManagementSystem.Attachments
             {
                 StoredFileName = file.FileName,
                 ContentType = file.ContentType,
-                Name = file.Name,
-                Length = file.Length
+                Name = file.FileName,
+                Length = file.Length,
+                Extension= postedFileExtension
             };
 
             await _attachmentRepository.InsertAsync(attachment);
             await CurrentUnitOfWork.SaveChangesAsync();
 
-            return attachment.Id.ToString();
+            return attachment.Id;
         }
     }
 }

@@ -35,7 +35,8 @@ namespace TaskManagementSystem.Web.Controllers
             var list = tasks.Items.Where(c => c.UserId == _abpSession.UserId.Value).ToList();
             var model = new MyTaskSheetListViewModel()
             {
-                UserId = _abpSession.UserId.Value
+                UserId = _abpSession.UserId.Value,
+                DependentTask = tasks.Items,
             };
             return View(model);
         }
@@ -43,10 +44,12 @@ namespace TaskManagementSystem.Web.Controllers
         public async Task<ActionResult> EditModal(int taskId)
         {
             var task = await _taskSheetAppService.GetAsync(new EntityDto<int>(taskId));
+            var tasks = await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto());
             task.UserId = _abpSession.UserId.Value;
             var model = new EditMyTaskSheetModalViewModel
             {
-                TaskSheet = task
+                TaskSheet = task,
+                DependentTask = tasks.Items.ToList()
             };
             return PartialView("_EditModal", model);
         }

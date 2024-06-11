@@ -5,7 +5,7 @@
         _$form = _$modal.find('form');
 
     function save() {
-        debugger;
+      
         if (!_$form.valid()) {
             return;
         }

@@ -1,24 +1,42 @@
-﻿(function () {
-document.addEventListener('DOMContentLoaded', function () {
-    const fileInput = document.getElementById('fileInput');
-    const uploadButton = document.getElementById('uploadButton');
-
-    uploadButton.addEventListener('click', function () {
+﻿(function ($) {
+    debugger;
+    document.getElementById('uploadButton').addEventListener('click', () => {
+        const fileInput = document.getElementById('fileInput');
         fileInput.click();
     });
 
-    fileInput.addEventListener('change', function () {
-        debugger;
-        const files = fileInput.files;
-        if (files.length > 0) {
-            const file = files[0];
+    document.getElementById('fileInput').addEventListener('change', () => {
+
+        const file = document.getElementById('fileInput').files[0];
+        if (file) {
             uploadAttachment(file);
         }
     });
-});
-})();
+    function uploadAttachment(file) {
+
+        const formData = new FormData();
+        formData.append('file', file);
+        var url = abp.appPath + 'api/services/app/attachment/UploadAttachment';
+
+        abp.ajax({
+            url: url,
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (result) {
+                document.getElementById('attachmentId').value = result;
+                document.getElementById('uploadedFileName').textContent = file.name;
+                abp.notify.info('File uploaded successfully.');
+            },
+            error: function (error) {
+                abp.notify.error('File upload failed.');
+            }
+        });
+    }
+})(jQuery);
 function toggleDependentTaskDiv() {
-    debugger;
+  
     var checkbox = document.getElementById('toggleCheckbox');
     var dependentTaskDiv = document.getElementById('dependentTaskDiv');
     if (checkbox.checked) {
@@ -28,7 +46,7 @@ function toggleDependentTaskDiv() {
     }
 }
 function toggleDependentTaskDivForEdit() {
-    debugger;
+  
     var checkbox = document.getElementById('editToggleCheckbox');
     var dependentTaskDiv = document.getElementById('editDependentTaskDiv');
     if (checkbox.checked) {
@@ -36,33 +54,4 @@ function toggleDependentTaskDivForEdit() {
     } else {
         dependentTaskDiv.style.display = 'none';
     }
-}
-
-function uploadAttachment(file) {
-    debugger;
-
-    fetch('api/attachment/uploadAttachment', {
-        method: 'POST',
-        body: file
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Server responded with error: ' + response.status + ' ' + response.statusText);
-            }
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                return response.json();
-            } else {
-                throw new Error('Response was not JSON');
-            }
-        })
-        .then(data => {
-            console.log('Upload response:', data);
-            // Handle upload response
-        })
-        .catch(error => {
-            debugger;
-            console.error('Error uploading file:', error);
-            // Handle upload error
-        });
 }
