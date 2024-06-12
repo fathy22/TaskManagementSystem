@@ -39,13 +39,10 @@ namespace TaskManagementSystem.Authorization.Users
 
         public async Task<User> RegisterAsync(string name, string surname, string emailAddress, string userName, string plainPassword, bool isEmailConfirmed)
         {
-            CheckForTenant();
-
-            var tenant = await GetActiveTenantAsync();
 
             var user = new User
             {
-                TenantId = tenant.Id,
+                TenantId =null,
                 Name = name,
                 Surname = surname,
                 EmailAddress = emailAddress,
@@ -56,14 +53,11 @@ namespace TaskManagementSystem.Authorization.Users
             };
 
             user.SetNormalizedNames();
-           
-            foreach (var defaultRole in await _roleManager.Roles.Where(r => r.IsDefault).ToListAsync())
+             var defaultRole = await _roleManager.Roles.Where(r => r.Name.ToLower() == StaticRoleNames.Host.RegularUsers.ToLower()).FirstOrDefaultAsync();
+            if (defaultRole!=null)
             {
-                user.Roles.Add(new UserRole(tenant.Id, user.Id, defaultRole.Id));
+                user.Roles.Add(new UserRole(null, user.Id, defaultRole.Id));
             }
-
-            await _userManager.InitializeOptionsAsync(tenant.Id);
-
             CheckErrors(await _userManager.CreateAsync(user, plainPassword));
             await CurrentUnitOfWork.SaveChangesAsync();
 

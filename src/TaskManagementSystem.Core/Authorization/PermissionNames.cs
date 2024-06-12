@@ -13,5 +13,6 @@
         public const string Pages_MyTaskSheets= "Pages.MyTaskSheets";
         public const string Pages_TeamTaskSheets = "Pages.TeamTaskSheets";
         public const string Pages_Logs = "Pages.Logs";
+        public const string Pages_Admin_Dashboard= "Pages.Dashboard";
     }
 }

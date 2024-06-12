@@ -13,6 +13,14 @@ namespace TaskManagementSystem.Web.Startup
         public override void SetNavigation(INavigationProviderContext context)
         {
             context.Manager.MainMenu
+                  .AddItem(
+                    new MenuItemDefinition(
+                        PageNames.Home,
+                        L("HomePage"),
+                        url: "",
+                        icon: "fas fa-home",
+                        requiresAuthentication: true
+                    ))
                 .AddItem(
                     new MenuItemDefinition(
                         PageNames.Users,

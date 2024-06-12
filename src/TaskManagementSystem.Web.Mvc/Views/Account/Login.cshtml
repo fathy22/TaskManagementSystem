@@ -47,22 +47,11 @@
         </div>
     </div>
 </form>
-@*<div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="javascript:;" class="btn btn-block btn-primary">
-            <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="javascript:;" class="btn btn-block btn-danger">
-            <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-    </div>*@
 <p class="mb-0">
-    @if (Model.IsSelfRegistrationAllowed)
-    {
         <div class="row">
+            <label>Haven't Account?</label>
             <div class="col-12">
                 <a asp-action="Register" class="text-center"><i class="fa fa-plus-circle"></i> @L("Register")</a>
             </div>
         </div>
-    }
 </p>

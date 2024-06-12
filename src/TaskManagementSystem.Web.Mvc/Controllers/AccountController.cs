@@ -214,23 +214,11 @@ namespace TaskManagementSystem.Web.Controllers
 
                 await _unitOfWorkManager.Current.SaveChangesAsync();
 
-                Debug.Assert(user.TenantId != null);
-
-                var tenant = await _tenantManager.GetByIdAsync(user.TenantId.Value);
-
                 // Directly login if possible
                 if (user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin))
                 {
                     AbpLoginResult<Tenant, User> loginResult;
-                    if (externalLoginInfo != null)
-                    {
-                        loginResult = await _logInManager.LoginAsync(externalLoginInfo, tenant.TenancyName);
-                    }
-                    else
-                    {
-                        loginResult = await GetLoginResultAsync(user.UserName, model.Password, tenant.TenancyName);
-                    }
-
+                        loginResult = await GetLoginResultAsync(user.UserName, model.Password,"");
                     if (loginResult.Result == AbpLoginResultType.Success)
                     {
                         await _signInManager.SignInAsync(loginResult.Identity, false);
@@ -242,7 +230,7 @@ namespace TaskManagementSystem.Web.Controllers
 
                 return View("RegisterResult", new RegisterResultViewModel
                 {
-                    TenancyName = tenant.TenancyName,
+                    TenancyName = "",
                     NameAndSurname = user.Name + " " + user.Surname,
                     UserName = user.UserName,
                     EmailAddress = user.EmailAddress,
