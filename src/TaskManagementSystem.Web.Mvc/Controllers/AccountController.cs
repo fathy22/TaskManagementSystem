@@ -30,6 +30,7 @@ using TaskManagementSystem.MultiTenancy;
 using TaskManagementSystem.Sessions;
 using TaskManagementSystem.Web.Models.Account;
 using TaskManagementSystem.Web.Views.Shared.Components.TenantChange;
+using TaskManagementSystem.CustomLogs;
 
 namespace TaskManagementSystem.Web.Controllers
 {
@@ -44,6 +45,7 @@ namespace TaskManagementSystem.Web.Controllers
         private readonly SignInManager _signInManager;
         private readonly UserRegistrationManager _userRegistrationManager;
         private readonly ISessionAppService _sessionAppService;
+        private readonly ICustomLogAppService _customLogAppService;
         private readonly ITenantCache _tenantCache;
         private readonly INotificationPublisher _notificationPublisher;
 
@@ -58,7 +60,8 @@ namespace TaskManagementSystem.Web.Controllers
             UserRegistrationManager userRegistrationManager,
             ISessionAppService sessionAppService,
             ITenantCache tenantCache,
-            INotificationPublisher notificationPublisher)
+            INotificationPublisher notificationPublisher,
+            ICustomLogAppService customLogAppService)
         {
             _userManager = userManager;
             _multiTenancyConfig = multiTenancyConfig;
@@ -71,6 +74,7 @@ namespace TaskManagementSystem.Web.Controllers
             _sessionAppService = sessionAppService;
             _tenantCache = tenantCache;
             _notificationPublisher = notificationPublisher;
+            _customLogAppService = customLogAppService;
         }
 
         #region Login / Logout
@@ -105,7 +109,10 @@ namespace TaskManagementSystem.Web.Controllers
 
             await _signInManager.SignInAsync(loginResult.Identity, loginModel.RememberMe);
             await UnitOfWorkManager.Current.SaveChangesAsync();
-
+            await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+            {
+                Description= $"{loginResult.User.FullName} logined to the system"
+            });
             return Json(new AjaxResponse { TargetUrl = returnUrl });
         }
 
@@ -213,7 +220,10 @@ namespace TaskManagementSystem.Web.Controllers
                 }
 
                 await _unitOfWorkManager.Current.SaveChangesAsync();
-
+                await _customLogAppService.CreateAsync(new CustomLogs.Dto.CreateCustomLogDto
+                {
+                    Description = $"{user.FullName} registerd to the system"
+                });
                 // Directly login if possible
                 if (user.IsActive && (user.IsEmailConfirmed || !isEmailConfirmationRequiredForLogin))
                 {
