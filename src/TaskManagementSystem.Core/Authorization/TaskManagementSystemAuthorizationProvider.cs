@@ -17,6 +17,7 @@ namespace TaskManagementSystem.Authorization
             context.CreatePermission(PermissionNames.Pages_Teams, L("Teams"));
             context.CreatePermission(PermissionNames.Pages_Logs, L("Logs"));
             context.CreatePermission(PermissionNames.Pages_Admin_Dashboard, L("Dashboard"));
+            context.CreatePermission(PermissionNames.Pages_GanttChart, L("GanttChart"));
         }
 
         private static ILocalizableString L(string name)

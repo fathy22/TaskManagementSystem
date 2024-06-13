@@ -1,0 +1,67 @@
+﻿
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #gantt_here {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <div id="gantt_here"></div>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            gantt.config.xml_date = "%Y-%m-%d %H:%i";
+            gantt.init("gantt_here");
+
+            fetch('/TaskSheets/GetTasks')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    if (data.result && Array.isArray(data.result.result)) {
+                        const tasks = {
+                            data: data.result.result.map(task => {
+                                const startDate = new Date(task.dueDate);
+                                const duration = 1;
+                                const endDate = new Date(startDate);
+                                endDate.setDate(endDate.getDate() + duration);
+
+                                return {
+                                    id: task.id,
+                                    text: task.title,
+                                    start_date: gantt.date.date_to_str(gantt.config.xml_date)(startDate),
+                                    end_date: gantt.date.date_to_str(gantt.config.xml_date)(endDate),
+                                    duration: duration,
+                                    parent: 0, // Adjust as per your data hierarchy
+                                    dependencies: task.dependentTaskId
+                                };
+                            }),
+                            links: data.result.result.map(task => ({
+                                id: task.id,
+                                source: task.dependentTaskId,
+                                target: task.id,
+                                type: "0"
+                            }))
+                        };
+                        gantt.parse(tasks);
+                    } else {
+                        console.error('Invalid data format:', data);
+                    }
+                })
+                .catch(error => console.error('Error fetching tasks:', error));
+        });
+    </script>

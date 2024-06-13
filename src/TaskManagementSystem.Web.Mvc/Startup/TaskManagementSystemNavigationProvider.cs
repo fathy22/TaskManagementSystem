@@ -76,7 +76,14 @@ namespace TaskManagementSystem.Web.Startup
                         url: "CustomLogs",
                         icon: "fas fa-file-alt",
                         permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_Logs)
-                    )
+                    )).AddItem(
+                    new MenuItemDefinition(
+                        PageNames.GanttChart,
+                        L("GanttChart"),
+                        url: "TaskSheets/GanttChart",
+                        icon: "fas fa-tasks",
+                        permissionDependency: new SimplePermissionDependency(PermissionNames.Pages_GanttChart)
+                        )
                 );
         }
 

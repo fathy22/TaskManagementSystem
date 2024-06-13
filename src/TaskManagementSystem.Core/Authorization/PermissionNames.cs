@@ -10,6 +10,7 @@
 
         public const string Pages_TaskSheets = "Pages.TaskSheets";
         public const string Pages_Teams= "Pages.Teams";
+        public const string Pages_GanttChart = "Pages.GanttChart";
         public const string Pages_MyTaskSheets= "Pages.MyTaskSheets";
         public const string Pages_TeamTaskSheets = "Pages.TeamTaskSheets";
         public const string Pages_Logs = "Pages.Logs";

@@ -12,5 +12,6 @@
         public const string TeamTasks = "Team Tasks"; 
         public const string Teams = "Teams"; 
         public const string Logs = "Logs"; 
+        public const string GanttChart = "Gantt Chart"; 
     }
 }

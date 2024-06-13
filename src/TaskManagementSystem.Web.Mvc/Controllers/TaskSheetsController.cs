@@ -12,6 +12,9 @@ using TaskManagementSystem.Web.Models.TaskSheets;
 using System.Linq;
 using TaskManagementSystem.Teams;
 using TaskManagementSystem.Web.Models.Teams;
+using Abp.Runtime.Session;
+using TaskManagementSystem.Tasks.Dto;
+using TaskManagementSystem.Teams.Dto;
 
 namespace TaskManagementSystem.Web.Controllers
 {
@@ -59,9 +62,33 @@ namespace TaskManagementSystem.Web.Controllers
             return PartialView("_EditModal", model);
         }
 
-        public ActionResult ChangePassword()
+        [HttpGet]
+        public IActionResult GanttChart()
         {
             return View();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetTasks()
+        {
+            var tasks = await _taskSheetAppService.GetAllAsync(new Tasks.Dto.PagedTaskSheetResultRequestDto());
+            var result = tasks.Items.Select(t => new TaskSheetDto
+            {
+                Id = t.Id,
+                Title = t.Title,
+                Description = t.Description,
+                DueDate = t.DueDate,
+                TaskStatus = t.TaskStatus,
+                TaskPriority = t.TaskPriority,
+                UserId = t.UserId,
+                DependentTaskId = t.DependentTaskId,
+                Team = new TeamDto
+                {
+                    Id = t.TeamId ?? 0,
+                    Name = t.Team?.Name
+                }
+            }).ToList();
+
+            return Json(new { result });
         }
     }
 }

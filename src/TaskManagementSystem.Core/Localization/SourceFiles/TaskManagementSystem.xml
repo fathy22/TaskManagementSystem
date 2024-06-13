@@ -123,5 +123,7 @@
 	  <text name="TeamTasks">Team Tasks</text>
 	  <text name="Teams">Teams</text>
 	  <text name="Logs">Logs</text>
+	  <text name="GanttChart">Gantt Chart</text>
+	  <text name="Dashboard">Dashboard</text>
   </texts>
 </localizationDictionary>

@@ -10,6 +10,7 @@ using TaskManagementSystem.Attachments;
 using TaskManagementSystem.Authorization.Users;
 using TaskManagementSystem.Helpers.Enums;
 using TaskManagementSystem.Teams;
+using TaskManagementSystem.Teams.Dto;
 using TaskManagementSystem.Users.Dto;
 
 namespace TaskManagementSystem.Tasks.Dto
@@ -27,7 +28,7 @@ namespace TaskManagementSystem.Tasks.Dto
         public int? AttachmentId { get; set; }
         public Attachment Attachment { get; set; }
         public int? TeamId { get; set; }
-        public Team Team { get; set; }
+        public TeamDto Team { get; set; }
         public int? DependentTaskId { get; set; }
     }
 }
