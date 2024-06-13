@@ -34,7 +34,7 @@
                     <div class="form-group row required">
                         <label class="col-md-3 col-form-label" for="TeamMembers">Team Members</label>
                         <div class="col-md-9">
-                            <select id="TeamMembers" name="TeamMembers" class="form-control" required>
+                            <select id="TeamMembers" name="TeamMembers" multiple>
                                 <option value="">Select</option>
                                 @foreach (var user in Model.RegularUsers)
                                 {
